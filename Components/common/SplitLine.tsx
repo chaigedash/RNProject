@@ -1,4 +1,4 @@
-import {Color} from "../Constant/Theme.ts";
+import {Color} from "../../Constant/Theme.ts";
 import {View} from "react-native";
 
 export const SplitLine = () => {

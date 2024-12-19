@@ -4,6 +4,8 @@ import {Color} from "../Constant/Theme.ts";
 import {useEffect, useRef, useState} from "react";
 import {useAnimatedStyle} from "react-native-reanimated";
 import {AnimatedView} from "react-native-reanimated/lib/typescript/component/View";
+import {Button} from "@rneui/base";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 
 const contentEdge = 200;
 const screenWidth = Dimensions.get('window').width;
@@ -138,13 +140,13 @@ const styles= StyleSheet.create({
         textAlign: 'center',
         fontSize: 70,
         fontWeight: 'bold',
-        color: Color.background,
+        color: Color.light,
     },
     detailText: {
         fontSize: 20,
-        fontWeight: 'bold',
-        color: Color.background,
         padding: 20,
+        fontWeight: 'bold',
+        color: Color.light,
     },
     arrow: {
         marginLeft: 10,

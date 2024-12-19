@@ -1,48 +1,61 @@
-import {StyleSheet, Text, TouchableOpacity, View} from "react-native";
-import {Color} from "../../Constant/Theme.ts";
+import {StyleSheet, Text, ToastAndroid, TouchableOpacity, View} from "react-native";
+import {Color, globalStyles} from "../../Constant/Theme.ts";
 import {useNavigation} from "@react-navigation/native";
-import AvatarUpload from "../AvatarUploader.tsx";
-import {SplitLine} from "../SplitLine.tsx";
-import FontAwesome from "react-native-vector-icons/FontAwesome";
+import AvatarUpload from "./AvatarUploader.tsx";
+import {SplitLine} from "../common/SplitLine.tsx";
+import {useEffect, useState} from "react";
+import {userBasicInfoType} from "../../Constant/Type.ts";
+import {User} from "../../Constant/UserStorage.ts";
+import {WholeRowButton} from "../common/WholeRowButton.tsx";
+import {Route} from "../../Constant/Enums.ts";
 
 
 export const UserMainScreen = () => {
-    interface userInfoType {
-        id: string,
-        name: string,
-        avatar: string,
-        school: string,
-        major: string,
-    }
-    const userInfoData : userInfoType = {
-        id: '00000001',
-        name: '闷声发大柴',
+    const [userInfoData, setUserInfoData] = useState<userBasicInfoType>({
+        uid: 'not logged in',
+        userName: '',
         avatar: '',
-        school: '北京工业大学',
-        major: '软件工程'
+        school: '',
+        major: ''
+    });
+    const navigation = useNavigation()
+    useEffect(() => {
+        setUserInfoData(User.getInstance().getUserData());
+    }, [navigation.isFocused()]);
+    const handlePress = (toScreen: Route, params?: any) => {
+        // toScreen : Components/UserScreen.tsx -> Stack.Screen.name
+        navigation.navigate(toScreen, params);
     }
-    const navigation = useNavigation();
-    const handlePress = (toScreen: string) => {
-        navigation.navigate(toScreen);
+    const handleLogOut = () => {
+        // TODO:理论上这里应该添加后端逻辑
+        ToastAndroid.show('成功登出', ToastAndroid.SHORT);
+        User.getInstance().setLoggedIn(false);
+        User.getInstance().setUserData({
+            uid: 'not logged in',
+            userName: 'unknown',
+            avatar: 'unknown',
+            school: 'unknown',
+            major: 'unknown',
+        })
     }
     return (
         <View style={styles.mainContainer}>
-            <TouchableOpacity onPress={() => handlePress('UserInfo')}>
+            <TouchableOpacity onPress={() => handlePress(Route.UserInfo)}>
                 {/* 测试发现，AvatarUpload组件的press事件冒不到这里来，看来组件是事件冒泡的作用域 */}
                 <View style={styles.headerWrapper}>
                     <AvatarUpload url={userInfoData.avatar}></AvatarUpload>
                     <View style={styles.userInfoWrapper}>
-                        <Text style={styles.username}>
-                            {userInfoData.name}
+                        <Text style={[globalStyles.titleText, styles.username]}>
+                            {userInfoData.userName}
                         </Text>
-                        <Text style={styles.info}>
-                            用户ID: {userInfoData.id}
+                        <Text style={[globalStyles.secondaryText, styles.info]}>
+                            用户ID: {userInfoData.uid}
                         </Text>
                         <View style={styles.tagWrapper}>
-                            <Text style={styles.tag}>
+                            <Text style={globalStyles.tag}>
                                 {userInfoData.school}
                             </Text>
-                            <Text style={styles.tag}>
+                            <Text style={globalStyles.tag}>
                                 {userInfoData.major}
                             </Text>
                         </View>
@@ -50,24 +63,9 @@ export const UserMainScreen = () => {
                 </View>
             </TouchableOpacity>
             <SplitLine/>
-            <TouchableOpacity onPress={() => handlePress('Collection')}>
-                <View style={styles.button}>
-                    <FontAwesome style={styles.buttonIcon} name="bookmark"></FontAwesome>
-                    <Text style={styles.buttonText}>
-                        收藏
-                    </Text>
-                    <FontAwesome style={styles.buttonDecorationArrow} name="chevron-right"></FontAwesome>
-                </View>
-            </TouchableOpacity>
-            <TouchableOpacity onPress={() => handlePress('Settings')}>
-                <View style={styles.button}>
-                    <FontAwesome style={styles.buttonIcon} name="gear"></FontAwesome>
-                    <Text style={styles.buttonText}>
-                        设置
-                    </Text>
-                    <FontAwesome style={styles.buttonDecorationArrow} name="chevron-right"></FontAwesome>
-                </View>
-            </TouchableOpacity>
+            <WholeRowButton iconName={'bookmark'} text={'收藏'} handler={() => handlePress(Route.Collection)}></WholeRowButton>
+            <WholeRowButton iconName={'gear'} text={'权限分配'} handler={() => handlePress(Route.PermissionAssignment)}></WholeRowButton>
+            <WholeRowButton iconName={'dot-circle-o'} text={'登出'} handler={handleLogOut}></WholeRowButton>
         </View>
     );
 };
@@ -87,14 +85,9 @@ const styles = StyleSheet.create({
         flex: 1,
     },
     username: {
-        fontSize: 25,
-        fontWeight: 'bold',
-        color: Color.basic,
         marginBottom: 10,
     },
     info: {
-        fontSize: 15,
-        color: Color.secondary,
         marginBottom: 10,
     },
     tagWrapper: {
@@ -102,39 +95,4 @@ const styles = StyleSheet.create({
         position: 'absolute',
         bottom: 0,
     },
-    tag: {
-        borderColor: Color.secondary,
-        borderWidth: 1,
-        borderRadius: 5,
-        padding: 2,
-        paddingTop: 0,
-        fontSize: 15,
-        color: Color.secondary,
-        marginRight: 5,
-    },
-    button: {
-        height: 50,
-        paddingHorizontal: 10,
-        flexDirection: 'row',
-        alignItems: 'center',
-        marginTop: 10,
-        backgroundColor: Color.background,
-    },
-    buttonIcon: {
-        width: 35,
-        textAlign: 'center',
-        fontSize: 30,
-        color: Color.primary,
-    },
-    buttonText: {
-        height: '100%',
-        textAlignVertical: 'center',
-        fontSize: 20,
-        marginLeft: 5,
-    },
-    buttonDecorationArrow: {
-        position: 'absolute',
-        right: 20,
-        color: Color.secondary
-    }
 })

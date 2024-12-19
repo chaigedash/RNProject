@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { View, Text, TouchableOpacity, Image, StyleSheet, Alert } from 'react-native';
 import ImagePicker from 'react-native-image-crop-picker';
 import axios from 'axios';
-import {Color} from "../Constant/Theme.ts";
+import {Color} from "../../Constant/Theme.ts";
 
 const AvatarUpload = (props: {url: string, edge?: number, radius?: number}) => {
     // todo：后端已存url的显示逻辑
