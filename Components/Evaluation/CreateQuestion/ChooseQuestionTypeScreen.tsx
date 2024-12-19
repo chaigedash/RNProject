@@ -9,7 +9,7 @@ export const ChooseQuestionTypeScreen = () => {
     const navigation = useNavigation();
     return (
         <View style={styles.mainContainer}>
-            <Text style={[globalStyles.titleText, styles.title]}>请选择題目类型</Text>
+            <Text style={[globalStyles.titleText, styles.title]}>请选择题目类型</Text>
             <BigButton
                 leftIcon={<FontAwesome5Icon name={'clipboard'} size={30}/> }
                 title={'填空题'}

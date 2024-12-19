@@ -106,8 +106,6 @@ export const EvaluationDetailScreen: React.FC<{route: any}> = ({route}) => {
                 title={'提交'}
                 containerStyle={styles.submitButton}
                 onPress={() => {
-                    console.log(answerList);
-                    console.log(checkList);
                     navigation.navigate(Route.EvaluationResult, {evaluationId: evaluationId});
                 }}
             ></Button>

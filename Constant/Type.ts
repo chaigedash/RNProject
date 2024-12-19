@@ -41,5 +41,5 @@ export interface multipleChoiceQuestionType extends questionBasicInfoType {
 }
 export interface trueOrFalseQuestionType extends questionBasicInfoType {
     title: string,
-    correctAnswer: boolean,
+    correctAnswer: (boolean | null),
 }

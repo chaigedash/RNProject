@@ -25,6 +25,12 @@ export const EvaluationResultScreen: React.FC<{route: any}> = ({route}) => {
                     correctAnswer: ['e', 'p'],
                 },
                 {
+                    id: '6',
+                    type: QuestionType.gapFilling,
+                    title: ['Qu', 'stionGa', 'Filling'],
+                    correctAnswer: ['edhwaihdwp', 'p'],
+                },
+                {
                     id: '2',
                     type: QuestionType.trueOrFalse,
                     title: 'QuestionTrueOrFalse',
@@ -37,14 +43,42 @@ export const EvaluationResultScreen: React.FC<{route: any}> = ({route}) => {
                     correctAnswer: false,
                 },
                 {
-                    id: '4',
+                    id: '4-1',
                     type: QuestionType.multipleChoice,
                     title: 'QuestionSimpleChoice',
                     answerList: ['aaa', 'bbb', 'ccc', 'ddd'],
                     correctAnswer: ['aaa'],
                 },
                 {
-                    id: '5',
+                    id: '4-2',
+                    type: QuestionType.multipleChoice,
+                    title: 'QuestionSimpleChoice',
+                    answerList: ['aaa', 'bbb', 'ccc', 'ddd'],
+                    correctAnswer: ['aaa'],
+                },
+                {
+                    id: '5-1',
+                    type: QuestionType.multipleChoice,
+                    title: 'QuestionMultipleChoice',
+                    answerList: ['aaa', 'bbb', 'ccc', 'ddd'],
+                    correctAnswer: ['aaa', 'bbb'],
+                },
+                {
+                    id: '5-2',
+                    type: QuestionType.multipleChoice,
+                    title: 'QuestionMultipleChoice',
+                    answerList: ['aaa', 'bbb', 'ccc', 'ddd'],
+                    correctAnswer: ['aaa', 'bbb'],
+                },
+                {
+                    id: '5-3',
+                    type: QuestionType.multipleChoice,
+                    title: 'QuestionMultipleChoice',
+                    answerList: ['aaa', 'bbb', 'ccc', 'ddd'],
+                    correctAnswer: ['aaa', 'bbb'],
+                },
+                {
+                    id: '5-4',
                     type: QuestionType.multipleChoice,
                     title: 'QuestionMultipleChoice',
                     answerList: ['aaa', 'bbb', 'ccc', 'ddd'],
@@ -52,7 +86,7 @@ export const EvaluationResultScreen: React.FC<{route: any}> = ({route}) => {
                 }
             ])
             setAnswerList([
-                ['ea', 'p'], false, false, ['aaa'], ['aaa', 'bbb']
+                ['e', 'p'], ['ea', 'p'], false, false, ['aaa'], ['bbb'], ['aaa', 'bbb'], ['aaa'], ['aaa', 'bbb', 'ccc'], ['ccc', 'ddd']
             ])
         }
     }, [route.params]);

@@ -3,6 +3,7 @@ import {View, Text, StyleSheet} from "react-native";
 import React, {useEffect, useState} from "react";
 import {Color} from "../../../Constant/Theme.ts";
 import {CheckBlock} from "./CheckBlock.tsx";
+import FontAwesome from "react-native-vector-icons/FontAwesome";
 
 export const MultipleChoice = (
     props: {
@@ -56,20 +57,50 @@ export const MultipleChoice = (
             <View style={styles.checkboxContainer}>
                 {
                     props.answerList.map((answer, index) => {
+                        let checkedIcon, uncheckedIcon;
                         if (props.correctAnswer.length == 1) {
-                            return <CheckBox
-                                disabled={!props.editable}
-                                key={`_${index}`}
-                                title={answer}
-                                checked={props.finishedAnswer.includes(answer) || selectedAnswers.includes(answer)}
-                                onPress={() => handleAnswer(answer)}
-                                containerStyle={styles.checkbox}
-                                textStyle={styles.checkboxText}
-                                checkedIcon={'dot-circle-o'}
-                                uncheckedIcon={'circle-o'}
-                            />
+                            // 单选
+                            if (props.instantCheck) {
+                                // 显示答案
+                                if (props.correctAnswer.includes(answer)) {
+                                    // 正确答案
+                                    checkedIcon = <FontAwesome style={styles.correctCheckBox} name={'dot-circle-o'}/>
+                                    uncheckedIcon = <FontAwesome style={styles.correctCheckBox} name={'circle-o'}/>
+                                }
+                                else {
+                                    // 错误答案
+                                    checkedIcon = <FontAwesome style={styles.inCorrectCheckBox} name={'dot-circle-o'}/>
+                                    uncheckedIcon = <FontAwesome style={styles.inactiveCheckBox} name={'circle-o'}/>
+                                }
+                            }
+                            else {
+                                // 做题模式, 不显示答案
+                                checkedIcon = <FontAwesome style={styles.activeCheckBox} name={'dot-circle-o'}/>
+                                uncheckedIcon = <FontAwesome style={styles.inactiveCheckBox} name={'circle-o'}/>
+                            }
                         }
-                        else return <CheckBox
+                        else {
+                            // 多选
+                            if (props.instantCheck) {
+                                // 显示答案
+                                if (props.correctAnswer.includes(answer)) {
+                                    // 正确答案
+                                    checkedIcon = <FontAwesome style={styles.activeCheckBox} name={'check-square-o'}/>;
+                                    uncheckedIcon = <FontAwesome style={styles.correctCheckBox} name={'check-square-o'}/>;
+                                }
+                                else {
+                                    // 错误答案
+                                    checkedIcon = <FontAwesome style={styles.inCorrectCheckBox} name={'check-square-o'}/>
+                                    uncheckedIcon = <FontAwesome style={styles.inactiveCheckBox} name={'square-o'}/>
+                                }
+                            }
+                            else {
+                                // 做题模式, 不显示答案
+                                checkedIcon = <FontAwesome style={styles.activeCheckBox} name={'check-square-o'}/>
+                                uncheckedIcon = <FontAwesome style={styles.inactiveCheckBox} name={'square-o'}/>
+                            }
+                        }
+                        return <CheckBox
                             disabled={!props.editable}
                             key={`_${index}`}
                             title={answer}
@@ -77,6 +108,8 @@ export const MultipleChoice = (
                             onPress={() => handleAnswer(answer)}
                             containerStyle={styles.checkbox}
                             textStyle={styles.checkboxText}
+                            checkedIcon={checkedIcon}
+                            uncheckedIcon={uncheckedIcon}
                         />
                     })
                 }
@@ -118,18 +151,20 @@ const styles = StyleSheet.create({
     checkboxText: {
         fontSize: 16,
     },
-    resultContainer: {
-        marginTop: 16,
-        alignItems: 'center',
+    inactiveCheckBox: {
+        fontSize: 20,
+        color: Color.secondary
     },
-    correctText: {
+    activeCheckBox: {
+        fontSize: 20,
+        color: Color.primary
+    },
+    correctCheckBox: {
+        fontSize: 20,
         color: 'green',
-        fontSize: 18,
-        fontWeight: 'bold',
     },
-    incorrectText: {
+    inCorrectCheckBox: {
+        fontSize: 20,
         color: 'red',
-        fontSize: 18,
-        fontWeight: 'bold',
-    },
+    }
 });

@@ -10,7 +10,7 @@ export const TrueOrFalse = (
         editable: boolean,
         question: string,
         finishedAnswer: (null | boolean),
-        correctAnswer: boolean,
+        correctAnswer: (boolean | null),
         instantCheck: boolean,
         handler?: (check: boolean, answer: boolean) => any,
     }) => {
@@ -27,78 +27,45 @@ export const TrueOrFalse = (
         return answer === props.correctAnswer;
     }
     useEffect(() => {
-        console.log(props.finishedAnswer)
-        console.log(props.finishedAnswer === true)
         props.instantCheck && props.finishedAnswer !== null && setIsCorrect(checkAnswer(props.finishedAnswer))
     }, []);
     return (
         <Card containerStyle={styles.card}>
             <Card.Title style={globalStyles.titleText}>{props.question}</Card.Title>
             <View style={styles.buttonGroupContainer}>
-                {
-                    props.finishedAnswer === null &&
-                    <ButtonGroup
-                        disabled={!props.editable}
-                        buttons={[
-                            <>
-                                <FontAwesome name={'check'}></FontAwesome>
-                                <Text>True</Text>
-                            </>,
-                            <>
-                                <FontAwesome name={'close'}></FontAwesome>
-                                <Text>False</Text>
-                            </>,
-                        ]}
-                        selectedIndex={selectedIndex}
-                        onPress={handleAnswer}
-                        containerStyle={styles.buttonGroup}
-                        selectedButtonStyle={styles.selectedButton}
-                        textStyle={styles.buttonText}
-                        disabledSelectedTextStyle={isCorrect ? {
-                            color: 'green'
-                        }:{
+                <ButtonGroup
+                    disabled={!props.editable}
+                    selectedIndexes={props.finishedAnswer == true ? [0] : (props.finishedAnswer == false ? [1] : undefined)}
+                    buttons={[
+                        <>
+                            <FontAwesome name={'check'}></FontAwesome>
+                            <Text>True</Text>
+                        </>,
+                        <>
+                            <FontAwesome name={'close'}></FontAwesome>
+                            <Text>False</Text>
+                        </>,
+                    ]}
+                    selectedIndex={selectedIndex}
+                    onPress={handleAnswer}
+                    containerStyle={styles.buttonGroup}
+                    selectedButtonStyle={styles.selectedButton}
+                    textStyle={styles.buttonText}
+                    disabledSelectedTextStyle={props.finishedAnswer == props.correctAnswer ? {
+                        color: 'green'
+                    }: {
+                        color: 'red'
+                    }}
+                    disabledTextStyle={props.finishedAnswer == null ? {
+                        color: Color.secondary
+                    } : (
+                        props.finishedAnswer == props.correctAnswer ? {
                             color: Color.secondary
-                        }}
-                        disabledTextStyle={!isCorrect ? {
+                        } : {
                             color: 'green'
-                        }:{
-                            color: Color.secondary
-                        }}
-                    />
-                }
-                {
-                    props.finishedAnswer !== null &&
-                    <ButtonGroup
-                        disabled={!props.editable}
-                        selectedIndexes={[props.finishedAnswer ? 0 : 1]}
-                        buttons={[
-                            <>
-                                <FontAwesome name={'check'}></FontAwesome>
-                                <Text>True</Text>
-                            </>,
-                            <>
-                                <FontAwesome name={'close'}></FontAwesome>
-                                <Text>False</Text>
-                            </>,
-                        ]}
-                        selectedIndex={selectedIndex}
-                        onPress={handleAnswer}
-                        containerStyle={styles.buttonGroup}
-                        selectedButtonStyle={styles.selectedButton}
-                        textStyle={styles.buttonText}
-                        disabledSelectedTextStyle={isCorrect ? {
-                            color: 'green'
-                        }:{
-                            color: Color.secondary
-                        }}
-                        disabledTextStyle={!isCorrect ? {
-                            color: 'green'
-                        }:{
-                            color: Color.secondary
-                        }}
-                    />
-                }
-
+                        }
+                    )}
+                />
             </View>
             {
                 isCorrect !== null &&

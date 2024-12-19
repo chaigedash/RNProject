@@ -22,7 +22,6 @@ export const UserNameScreen: React.FC<{route: any}> = ({route}) => {
     }, [route.params]);
     const handleNameBlur = () => {
         const verifyResult = verifyName(userName.value);
-        console.log(verifyResult)
         setUserName({...userName, errorMessage: verifyResult.message})
     }
     const handleSave = () => {
